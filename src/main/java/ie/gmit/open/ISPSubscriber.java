@@ -2,24 +2,20 @@ package ie.gmit.open;
 
 import java.util.List;
 
-public class ISPSubscriber {
+public class ISPSubscriber extends Subscriber{
 
-    private Long subscriberId;
-
-    private String address;
-
-    private Long phoneNumber;
 
     private int baseRate;
-
     private long freeUsage;
 
-    public ISPSubscriber() {
-
+    public ISPSubscriber(Long subscriberId, String address, Long phoneNumber, int baseRate, long freeUsage) {
+        super(subscriberId, address, phoneNumber);
+        this.baseRate = baseRate;
+        this.freeUsage = freeUsage;
     }
 
     public double calculateBill() {
-        List<InternetSessionHistory.InternetSession> sessions = InternetSessionHistory.getCurrentSessions(subscriberId);
+        List<InternetSessionHistory.InternetSession> sessions = InternetSessionHistory.getCurrentSessions(getSubscriberId());
         long totalData = sessions.stream().mapToLong(InternetSessionHistory.InternetSession::getDataUsed).sum();
         long chargeableData = totalData - freeUsage;
         return chargeableData*baseRate/100;
@@ -28,44 +24,7 @@ public class ISPSubscriber {
     /**
      * @return the subscriberId
      */
-    public Long getSubscriberId() {
-        return subscriberId;
-    }
 
-    /**
-     * @param subscriberId the subscriberId to set
-     */
-    public void setSubscriberId(Long subscriberId) {
-        this.subscriberId = subscriberId;
-    }
-
-    /**
-     * @return the address
-     */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * @param address the address to set
-     */
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    /**
-     * @return the phoneNumber
-     */
-    public Long getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    /**
-     * @param phoneNumber the phoneNumber to set
-     */
-    public void setPhoneNumber(Long phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 
     /**
      * @return the baseRate
